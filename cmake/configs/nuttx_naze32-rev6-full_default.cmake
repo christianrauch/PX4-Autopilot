@@ -32,7 +32,7 @@ set(config_module_list
 	systemcmds/bl_update
 	systemcmds/config
 	systemcmds/esc_calib
-	systemcmds/hardfault_log
+	# systemcmds/hardfault_log	# needs SRAM on this STM32
 	systemcmds/led_control
 	systemcmds/mixer
 	#systemcmds/motor_ramp
