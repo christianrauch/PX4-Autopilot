@@ -69,7 +69,7 @@ set(config_module_list
 	modules/events
 	modules/gpio_led
 	modules/land_detector
-	modules/load_mon
+	# modules/load_mon	# needs CONFIG_SCHED_INSTRUMENTATION
 	modules/mavlink
 	modules/navigator
 
@@ -96,7 +96,7 @@ set(config_module_list
 	#
 	# Logging
 	#
-	modules/logger
+	# modules/logger	# watchdog support requires CONFIG_SCHED_INSTRUMENTATION
 
 	#
 	# Library modules
