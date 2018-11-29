@@ -185,9 +185,10 @@ stm32_boardinitialize(void)
 
 
 	/* configure ADC pins */
-	stm32_configgpio(GPIO_ADC1_IN12);	/* BATT_VOLTAGE_SENS */
-	stm32_configgpio(GPIO_ADC1_IN11);	/* BATT_CURRENT_SENS */
-	stm32_configgpio(GPIO_ADC1_IN0);	/* RSSI analog in */
+	// TODO: set voltage pins
+	// stm32_configgpio(GPIO_ADC1_IN12);	/* BATT_VOLTAGE_SENS */
+	// stm32_configgpio(GPIO_ADC1_IN11);	/* BATT_CURRENT_SENS */
+	// stm32_configgpio(GPIO_ADC1_IN0);	/* RSSI analog in */
 
 	// TODO: power peripherals
 	///* configure power supply control/sense pins */
@@ -252,7 +253,7 @@ stm32_boardinitialize(void)
  ****************************************************************************/
 
 static struct spi_dev_s *spi1;
-static struct spi_dev_s *spi2;
+// static struct spi_dev_s *spi2;
 static struct spi_dev_s *spi3;
 
 __EXPORT int board_app_initialize(uintptr_t arg)
@@ -288,22 +289,24 @@ __EXPORT int board_app_initialize(uintptr_t arg)
 	cpuload_initialize_once();
 #endif
 
+	// TODO: what do we do about 'stm32_serial_dma_poll'?
+
 	/* set up the serial DMA polling */
-	static struct hrt_call serial_dma_call;
-	struct timespec ts;
+	// static struct hrt_call serial_dma_call;
+	// struct timespec ts;
 
-	/*
-	 * Poll at 1ms intervals for received bytes that have not triggered
-	 * a DMA event.
-	 */
-	ts.tv_sec = 0;
-	ts.tv_nsec = 1000000;
+	// /*
+	//  * Poll at 1ms intervals for received bytes that have not triggered
+	//  * a DMA event.
+	//  */
+	// ts.tv_sec = 0;
+	// ts.tv_nsec = 1000000;
 
-	hrt_call_every(&serial_dma_call,
-		       ts_to_abstime(&ts),
-		       ts_to_abstime(&ts),
-		       (hrt_callout)stm32_serial_dma_poll,
-		       NULL);
+	// hrt_call_every(&serial_dma_call,
+	// 	       ts_to_abstime(&ts),
+	// 	       ts_to_abstime(&ts),
+	// 	       (hrt_callout)stm32_serial_dma_poll,
+	// 	       NULL);
 
 #if defined(CONFIG_STM32_BBSRAM)
 
@@ -459,24 +462,25 @@ __EXPORT int board_app_initialize(uintptr_t arg)
 	SPI_SELECT(spi1, PX4_SPIDEV_MPU, false);
 	up_udelay(20);
 
-	// SPI2: SDCard
-	/* Get the SPI port for the microSD slot */
-	spi2 = stm32_spibus_initialize(CONFIG_NSH_MMCSDSPIPORTNO);
+	// TODO: remove remains of SD card on SPI2
+	// // SPI2: SDCard
+	// /* Get the SPI port for the microSD slot */
+	// spi2 = stm32_spibus_initialize(CONFIG_NSH_MMCSDSPIPORTNO);
 
-	if (!spi2) {
-		message("[boot] FAILED to initialize SPI port %d\n", CONFIG_NSH_MMCSDSPIPORTNO);
-		return -ENODEV;
-	}
+	// if (!spi2) {
+	// 	message("[boot] FAILED to initialize SPI port %d\n", CONFIG_NSH_MMCSDSPIPORTNO);
+	// 	return -ENODEV;
+	// }
 
-	/* Now bind the SPI interface to the MMCSD driver */
-	int result = mmcsd_spislotinitialize(CONFIG_NSH_MMCSDMINOR, CONFIG_NSH_MMCSDSLOTNO, spi2);
+	// /* Now bind the SPI interface to the MMCSD driver */
+	// int result = mmcsd_spislotinitialize(CONFIG_NSH_MMCSDMINOR, CONFIG_NSH_MMCSDSLOTNO, spi2);
 
-	if (result != OK) {
-		message("[boot] FAILED to bind SPI port 2 to the MMCSD driver\n");
-		return -ENODEV;
-	}
+	// if (result != OK) {
+	// 	message("[boot] FAILED to bind SPI port 2 to the MMCSD driver\n");
+	// 	return -ENODEV;
+	// }
 
-	up_udelay(20);
+	// up_udelay(20);
 
 
 	// SPI3: OSD / Baro

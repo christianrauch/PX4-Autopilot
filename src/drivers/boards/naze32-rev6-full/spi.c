@@ -103,18 +103,18 @@ __EXPORT uint8_t stm32_spi2status(FAR struct spi_dev_s *dev, uint32_t devid)
 	return SPI_STATUS_PRESENT;
 }
 
-__EXPORT void stm32_spi3select(FAR struct spi_dev_s *dev, uint32_t devid, bool selected)
-{
-	UNUSED(devid);
-	/* SPI select is active low, so write !selected to select the device */
-	px4_arch_gpiowrite(GPIO_SPI3_CS_BARO, !selected);
-}
+// __EXPORT void stm32_spi3select(FAR struct spi_dev_s *dev, uint32_t devid, bool selected)
+// {
+// 	UNUSED(devid);
+// 	/* SPI select is active low, so write !selected to select the device */
+// 	px4_arch_gpiowrite(GPIO_SPI3_CS_BARO, !selected);
+// }
 
-__EXPORT uint8_t stm32_spi3status(FAR struct spi_dev_s *dev, uint32_t devid)
-{
-	/* FRAM is always present */
-	return SPI_STATUS_PRESENT;
-}
+// __EXPORT uint8_t stm32_spi3status(FAR struct spi_dev_s *dev, uint32_t devid)
+// {
+// 	/* FRAM is always present */
+// 	return SPI_STATUS_PRESENT;
+// }
 
 __EXPORT void board_spi_reset(int ms)
 {
@@ -159,13 +159,15 @@ __EXPORT void board_spi_reset(int ms)
 	stm32_gpiowrite(GPIO_SPI2_MOSI_OFF, 0);
 
 	/* disable SPI bus 3*/
-	stm32_configgpio(GPIO_SPI3_SCK_OFF);
-	stm32_configgpio(GPIO_SPI3_MISO_OFF);
-	stm32_configgpio(GPIO_SPI3_MOSI_OFF);
+	// TODO: do we need SPI3?
+	// stm32_configgpio(GPIO_SPI3_SCK_OFF);
+	// stm32_configgpio(GPIO_SPI3_MISO_OFF);
+	// stm32_configgpio(GPIO_SPI3_MOSI_OFF);
 
-	stm32_gpiowrite(GPIO_SPI3_SCK_OFF, 0);
-	stm32_gpiowrite(GPIO_SPI3_MISO_OFF, 0);
-	stm32_gpiowrite(GPIO_SPI3_MOSI_OFF, 0);
+	// TODO: do we need SPI3?
+	// stm32_gpiowrite(GPIO_SPI3_SCK_OFF, 0);
+	// stm32_gpiowrite(GPIO_SPI3_MISO_OFF, 0);
+	// stm32_gpiowrite(GPIO_SPI3_MOSI_OFF, 0);
 
 	/* wait a bit before starting SPI, different times didn't influence results */
 	usleep(100);
@@ -178,7 +180,7 @@ __EXPORT void board_spi_reset(int ms)
 
 	// TODO: why do we not enable SPI2 here?
 
-	stm32_configgpio(GPIO_SPI3_SCK);
-	stm32_configgpio(GPIO_SPI3_MISO);
-	stm32_configgpio(GPIO_SPI3_MOSI);
+	// stm32_configgpio(GPIO_SPI3_SCK);
+	// stm32_configgpio(GPIO_SPI3_MISO);
+	// stm32_configgpio(GPIO_SPI3_MOSI);
 }
