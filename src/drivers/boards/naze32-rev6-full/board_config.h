@@ -70,7 +70,7 @@
 // #define PX4_BBSRAM_SIZE STM32_BBSRAM_SIZE
 // #define PX4_BBSRAM_SIZE 0	//  #  error No backup SRAM on this STM32
 // TODO: deactivate backup SRAM
-#define PX4_BBSRAM_SIZE 2048
+// #define PX4_BBSRAM_SIZE 2048
 
 /*
  * ADC channels
