@@ -75,7 +75,7 @@
 __EXPORT void stm32_spiinitialize()
 {
 	stm32_configgpio(GPIO_SPI_CS_MEMS);
-	stm32_configgpio(GPIO_SPI_CS_SDCARD);
+	// stm32_configgpio(GPIO_SPI_CS_SDCARD);
 	stm32_configgpio(GPIO_SPI3_CS_BARO);
 }
 
@@ -95,7 +95,7 @@ __EXPORT void stm32_spi2select(FAR struct spi_dev_s *dev, uint32_t devid, bool s
 {
 	/* SPI select is active low, so write !selected to select the device */
 	UNUSED(devid);
-	px4_arch_gpiowrite(GPIO_SPI_CS_SDCARD, !selected);
+	// px4_arch_gpiowrite(GPIO_SPI_CS_SDCARD, !selected);
 }
 
 __EXPORT uint8_t stm32_spi2status(FAR struct spi_dev_s *dev, uint32_t devid)
@@ -133,8 +133,8 @@ __EXPORT void board_spi_reset(int ms)
 	stm32_gpiowrite(GPIO_SPI1_CS_MEMS_OFF, 0);
 
 	/* disable SPI bus 2  CS */
-	stm32_configgpio(GPIO_SPI2_CS_SDCARD_OFF);
-	stm32_gpiowrite(GPIO_SPI2_CS_SDCARD_OFF, 0);
+	// stm32_configgpio(GPIO_SPI2_CS_SDCARD_OFF);
+	// stm32_gpiowrite(GPIO_SPI2_CS_SDCARD_OFF, 0);
 
 	/* disable SPI bus 3  CS */
 	stm32_configgpio(GPIO_SPI3_CS_BARO_OFF);

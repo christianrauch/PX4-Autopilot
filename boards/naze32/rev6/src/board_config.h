@@ -144,7 +144,7 @@
  */
 // #define GPIO_SPI_CS_SDCARD         (GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_50MHz|GPIO_OUTPUT_SET|GPIO_PORTB|GPIO_PIN12)
 // TODO: SD card pin
-#define GPIO_SPI_CS_SDCARD 0
+// #define GPIO_SPI_CS_SDCARD 0
 
 /*
  * Define the Chip Selects for SPI3
@@ -180,7 +180,8 @@
 #define GPIO_SPI2_MISO_OFF           _PIN_OFF(GPIO_SPI2_MISO)
 #define GPIO_SPI2_MOSI_OFF           _PIN_OFF(GPIO_SPI2_MOSI)
 /* SPI 2 CS's  off */
-#define GPIO_SPI2_CS_SDCARD_OFF         _PIN_OFF(GPIO_SPI_CS_SDCARD)
+// TODO: replcae for sensor at SPI2
+// #define GPIO_SPI2_CS_SDCARD_OFF         _PIN_OFF(GPIO_SPI_CS_SDCARD)
 
 /* SPI 3 bus off */
 // TODO: do we need SPI3?
@@ -200,7 +201,9 @@
  *
  * PA9  OTG_FS_VBUS VBUS sensing
  */
-#define GPIO_OTGFS_VBUS		(GPIO_INPUT|GPIO_FLOAT|GPIO_SPEED_100MHz|GPIO_OPENDRAIN|GPIO_PORTC|GPIO_PIN5)
+// #define GPIO_OTGFS_VBUS		(GPIO_INPUT|GPIO_FLOAT|GPIO_SPEED_100MHz|GPIO_OPENDRAIN|GPIO_PORTC|GPIO_PIN5)
+// TODO: find a replacement for GPIO_FLOAT, GPIO_SPEED_100MHz
+// #define GPIO_OTGFS_VBUS		(GPIO_INPUT|GPIO_OPENDRAIN|GPIO_PORTC|GPIO_PIN5)
 
 /*----------------------------------------------------------*/
 /*        End OMNIBUSF4SD SPI chip selects and DRDY         */
@@ -299,7 +302,7 @@
 #define GPIO_SERVO_4                 (1<<3)  /**< servo 4 output */
 
 /* This board provides a DMA pool and APIs */
-#define BOARD_DMA_ALLOC_POOL_SIZE    5120
+// #define BOARD_DMA_ALLOC_POOL_SIZE    5120
 
 #define BOARD_HAS_ON_RESET 1
 
