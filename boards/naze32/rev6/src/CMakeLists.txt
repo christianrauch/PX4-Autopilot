@@ -46,4 +46,6 @@ target_link_libraries(drivers_board
 		nuttx_arch # sdio
 		nuttx_drivers # sdio
 		parameters # param_init
+		mathlib	# for math::LowPassFilter2p::set_cutoff_frequency
+		conversion	# for rotate_3f()
 )
