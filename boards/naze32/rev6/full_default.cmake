@@ -62,9 +62,9 @@ px4_add_board(
 		# logger	# watchdog support requires
 		# mavlink
 		# micrortps_bridge
-		# mc_att_control
-		# mc_pos_control
-		# navigator
+		# mc_att_control	# requires mc_pos_control, sensors
+		# mc_pos_control	# requires navigator
+		# navigator	# requires mc_pos_control, commander
 		#position_estimator_inav
 		# sensors
 		#uavcan
