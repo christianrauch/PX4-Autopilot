@@ -35,7 +35,7 @@ CONFIG_RAW_BINARY=y
 #
 # CONFIG_ARCH_STDINT_H is not set
 # CONFIG_ARCH_STDBOOL_H is not set
-CONFIG_ARCH_MATH_H=y
+# CONFIG_ARCH_MATH_H is not set
 # CONFIG_ARCH_FLOAT_H is not set
 # CONFIG_ARCH_STDARG_H is not set
 # CONFIG_ARCH_DEBUG_H is not set
@@ -983,6 +983,7 @@ CONFIG_NUNGET_CHARS=2
 # CONFIG_EOL_IS_BOTH_CRLF is not set
 CONFIG_EOL_IS_EITHER_CRLF=y
 # CONFIG_MEMCPY_VIK is not set
+CONFIG_LIBM=y
 
 #
 # Architecture-Specific Support
