@@ -1,7 +1,7 @@
 px4_add_board(
 	PLATFORM nuttx
 	VENDOR naze32
-	MODEL rev6full
+	MODEL rev6
 	TOOLCHAIN arm-none-eabi
 	ARCHITECTURE cortex-m3
 	ROMFSROOT px4fmu_common
