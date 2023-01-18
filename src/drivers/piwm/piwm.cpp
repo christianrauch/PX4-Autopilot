@@ -37,8 +37,8 @@
 #include <px4_platform_common/log.h>
 #include <px4_platform_common/posix.h>
 
+#include <uORB/topics/actuator_outputs.h>
 #include <uORB/topics/parameter_update.h>
-#include <uORB/topics/sensor_combined.h>
 
 int TemplateModule::print_status() {
   PX4_INFO("Running");
@@ -126,10 +126,10 @@ TemplateModule::TemplateModule(int example_param, bool example_flag)
 
 void TemplateModule::run() {
   // Example: run the loop synchronized to the sensor_combined topic publication
-  int sensor_combined_sub = orb_subscribe(ORB_ID(sensor_combined));
+  int actuator_outputs_sub = orb_subscribe(ORB_ID(actuator_outputs));
 
   px4_pollfd_struct_t fds[1];
-  fds[0].fd = sensor_combined_sub;
+  fds[0].fd = actuator_outputs_sub;
   fds[0].events = POLLIN;
 
   // initialize parameters
@@ -151,15 +151,20 @@ void TemplateModule::run() {
 
     } else if (fds[0].revents & POLLIN) {
 
-      struct sensor_combined_s sensor_combined;
-      orb_copy(ORB_ID(sensor_combined), sensor_combined_sub, &sensor_combined);
+      struct actuator_outputs_s actuator_outputs;
+      orb_copy(ORB_ID(actuator_outputs), actuator_outputs_sub,
+               &actuator_outputs);
       // TODO: do something with the data...
+      PX4_INFO("actuators: %d", actuator_outputs.noutputs);
+      for (uint32_t i = 0; i < actuator_outputs.noutputs; i++) {
+        PX4_INFO("actuator(%d): %f", i, double(actuator_outputs.output[i]));
+      }
     }
 
     parameters_update();
   }
 
-  orb_unsubscribe(sensor_combined_sub);
+  orb_unsubscribe(actuator_outputs_sub);
 }
 
 void TemplateModule::parameters_update(bool force) {
