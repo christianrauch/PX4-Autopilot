@@ -11,7 +11,7 @@ else()
 endif()
 
 add_custom_target(upload
-	COMMAND rsync -arh --progress
+	COMMAND rsync -arh --progress -e "ssh -o StrictHostKeyChecking=no"
 			${CMAKE_RUNTIME_OUTPUT_DIRECTORY} ${PX4_SOURCE_DIR}/boards/raspberrypi/flypi/configs/flypi.config ${PX4_BINARY_DIR}/etc # source
 			"${AUTOPILOT_USER}@${AUTOPILOT_HOST}:/home/${AUTOPILOT_USER}/px4" # destination
 	DEPENDS px4
