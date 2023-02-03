@@ -1,10 +1,10 @@
 {
     "board_id": 42,
-    "magic": "OMNIBUSF4SD",
-    "description": "Firmware for the OmnibusF4SD board",
+    "magic": "NAZE32REV6FULL",
+    "description": "Firmware for the Naze32 Rev6 full board",
     "image": "",
     "build_time": 0,
-    "summary": "PX4/OmnibusF4",
+    "summary": "PX4/Naze32Rev6",
     "version": "0.1",
     "image_size": 0,
     "image_maxsize": 1032192,
