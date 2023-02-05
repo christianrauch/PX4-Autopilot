@@ -86,7 +86,7 @@
 //--------------------------------------------//---------------------------//----------------
 #define DMACHAN_SPI1_RX    DMAMAP_SPI1_RX_1   // DMA2, Stream 0, Channel 3    (SPI1 RX)
 #define DMAMAP_USART6_RX   DMAMAP_USART6_RX_1 // DMA2, Stream 1, Channel 4
-#define DMAMAP_USART1_RX   DMAMAP_USART1_RX_1 // DMA2, Stream 2, Channel 4
+// #define DMAMAP_USART1_RX   DMAMAP_USART1_RX_1 // DMA2, Stream 2, Channel 4
 #define DMACHAN_SPI1_TX    DMAMAP_SPI1_TX_1   // DMA2, Stream 3, Channel 3    (SPI1 TX)
 //      AVAILABLE                             // DMA2, Stream 4
 //      AVAILABLE                             // DMA2, Stream 5

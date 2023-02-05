@@ -115,7 +115,14 @@
 #define STM32_PLLCFG_PLLP       RCC_PLLCFG_PLLP_2
 #define STM32_PLLCFG_PLLQ       RCC_PLLCFG_PLLQ(7)
 
-#define STM32_SYSCLK_FREQUENCY  168000000ul
+// from stm32f103-minimum
+#define STM32_SYSCLK_FREQUENCY  (9*STM32_BOARD_XTAL)
+#define STM32_SYSCLK_SW         RCC_CFGR_SW_PLL
+#define STM32_SYSCLK_SWS        RCC_CFGR_SWS_PLL
+
+#define STM32_CFGR_PLLSRC       RCC_CFGR_PLLSRC
+#define STM32_CFGR_PLLXTPRE     0
+#define STM32_CFGR_PLLMUL       RCC_CFGR_PLLMUL_CLKx9
 
 /* AHB clock (HCLK) is SYSCLK (168MHz) */
 
@@ -242,8 +249,8 @@
  * PA10 (RX) and PA9 (TX) are broken out on J5
  */
 
-#define GPIO_USART1_RX GPIO_USART1_RX_1
-#define GPIO_USART1_TX GPIO_USART1_TX_1
+// #define GPIO_USART1_RX GPIO_USART1_RX_1
+// #define GPIO_USART1_TX GPIO_USART1_TX_1
 
 /* USART3:
  *
@@ -282,9 +289,9 @@
  *  MOSI: PA7
  */
 
-#define GPIO_SPI1_SCK  GPIO_SPI1_SCK_1
-#define GPIO_SPI1_MISO GPIO_SPI1_MISO_1
-#define GPIO_SPI1_MOSI GPIO_SPI1_MOSI_1
+// #define GPIO_SPI1_SCK  GPIO_SPI1_SCK_1
+// #define GPIO_SPI1_MISO GPIO_SPI1_MISO_1
+// #define GPIO_SPI1_MOSI GPIO_SPI1_MOSI_1
 
 /* SPI2:
  *  SD Card
@@ -294,9 +301,9 @@
  *  MOSI: PB15
  */
 
-#define GPIO_SPI2_SCK	  GPIO_SPI2_SCK_2
-#define GPIO_SPI2_MISO	GPIO_SPI2_MISO_1
-#define GPIO_SPI2_MOSI	GPIO_SPI2_MOSI_1
+// #define GPIO_SPI2_SCK	  GPIO_SPI2_SCK_2
+// #define GPIO_SPI2_MISO	GPIO_SPI2_MISO_1
+// #define GPIO_SPI2_MOSI	GPIO_SPI2_MOSI_1
 
 /* SPI3:
  *  BMP280
@@ -306,9 +313,9 @@
  *  MOSI: PC12
  */
 
-#define GPIO_SPI3_SCK  GPIO_SPI3_SCK_2
-#define GPIO_SPI3_MISO GPIO_SPI3_MISO_2
-#define GPIO_SPI3_MOSI GPIO_SPI3_MOSI_2
+// #define GPIO_SPI3_SCK  GPIO_SPI3_SCK_2
+// #define GPIO_SPI3_MISO GPIO_SPI3_MISO_2
+// #define GPIO_SPI3_MOSI GPIO_SPI3_MOSI_2
 
 /*
  * I2C (external)
@@ -321,7 +328,7 @@
  *   reset the bus to clear stuck slaves.  They match the pin configuration,
  *   but are normally-high GPIOs.
  */
-#define GPIO_I2C2_SCL		GPIO_I2C2_SCL_1
-#define GPIO_I2C2_SDA		GPIO_I2C2_SDA_1
+// #define GPIO_I2C2_SCL		GPIO_I2C2_SCL_1
+// #define GPIO_I2C2_SDA		GPIO_I2C2_SDA_1
 
 #endif  /* __CONFIG_OMNIBUSF4SD_INCLUDE_BOARD_H */
