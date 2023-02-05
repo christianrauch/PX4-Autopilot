@@ -31,7 +31,7 @@
  *
  ****************************************************************************/
 
-#include <px4_arch/spi_hw_description.h>
+#include "../platforms/nuttx/src/px4/stm/stm32_common/include/px4_arch/spi_hw_description.h"
 #include <drivers/drv_sensor.h>
 #include <nuttx/spi/spi.h>
 
