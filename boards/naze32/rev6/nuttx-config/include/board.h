@@ -299,6 +299,7 @@
 #define GPIO_SPEED_2MHz             (1 << GPIO_SPEED_SHIFT)    /* 2 MHz Low speed output */
 #define GPIO_PUPD_SHIFT               (16)                       /* Bits 16-17: Pull-up/pull down */
 #define GPIO_FLOAT                  (0 << GPIO_PUPD_SHIFT)     /* No pull-up, pull-down */
+#define GPIO_PULLDOWN               (2 << GPIO_PUPD_SHIFT)     /* Pull-down */
 
 /* SPI2:
  *  SD Card
