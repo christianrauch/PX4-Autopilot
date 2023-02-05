@@ -46,6 +46,8 @@
 
 #include <nuttx/board.h>
 
+#ifdef GPIO_LED_BLUE
+
 /*
  * Ideally we'd be able to get these from arm_internal.h,
  * but since we want to be able to disable the NuttX use
@@ -118,3 +120,5 @@ __EXPORT void board_autoled_off(int led)
 		stm32_gpiowrite(GPIO_LED1, true);
 	}
 }
+
+#endif
