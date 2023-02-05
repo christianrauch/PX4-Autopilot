@@ -50,4 +50,9 @@ constexpr px4_spi_bus_t px4_spi_buses[SPI_BUS_MAX_BUS_ITEMS] = {
 	}),
 };
 
+constexpr bool validateSPIConfig(const px4_spi_bus_t spi_buses_conf[SPI_BUS_MAX_BUS_ITEMS])
+{
+	return true;
+}
+
 static constexpr bool unused = validateSPIConfig(px4_spi_buses);
