@@ -242,7 +242,7 @@ static inline constexpr io_timers_t initIOTimer(Timer::Timer timer, DMA dshot_dm
 		break;
 #endif
 
-#ifdef STM32_TIM12_BASE
+#if defined(STM32_TIM12_BASE) && defined(RCC_APB1ENR_TIM12EN)
 
 	case Timer::Timer12:
 		ret.base = STM32_TIM12_BASE;
