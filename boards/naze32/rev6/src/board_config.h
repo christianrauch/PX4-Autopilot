@@ -56,8 +56,8 @@
 /* LEDs */
 // power - green
 // LED1 - PB5 - blue
-#define GPIO_LED1       (GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_50MHz|GPIO_OUTPUT_CLEAR|GPIO_PORTB|GPIO_PIN5)
-#define GPIO_LED_BLUE   GPIO_LED1
+// #define GPIO_LED1       (GPIO_OUTPUT|GPIO_PUSHPULL|GPIO_SPEED_50MHz|GPIO_OUTPUT_CLEAR|GPIO_PORTB|GPIO_PIN5)
+// #define GPIO_LED_BLUE   GPIO_LED1
 
 #define BOARD_OVERLOAD_LED     LED_BLUE
 
@@ -115,12 +115,15 @@
  */
 #define DIRECT_PWM_OUTPUT_CHANNELS      4
 
+#define BOARD_HAS_NO_CAPTURE
+
 /* High-resolution timer */
 #define HRT_TIMER                    4 // T4C1
 #define HRT_TIMER_CHANNEL            1 // use capture/compare channel 1
 
 #define HRT_PPM_CHANNEL              3 // capture/compare channel 3
 // #define GPIO_PPM_IN                  (GPIO_ALT|GPIO_AF2|GPIO_PULLUP|GPIO_PORTB|GPIO_PIN8)
+#define GPIO_PPM_IN                  0 // TODO
 
 #define RC_SERIAL_PORT               "/dev/ttyS0"
 #define BOARD_SUPPORTS_RC_SERIAL_PORT_OUTPUT
