@@ -37,6 +37,8 @@
 #include <px4_platform_common/log.h>
 #include <px4_platform_common/posix.h>
 
+#include <drivers/drv_pwm_output.h>
+
 #include <uORB/topics/actuator_outputs.h>
 #include <uORB/topics/parameter_update.h>
 
@@ -122,7 +124,11 @@ TemplateModule *TemplateModule::instantiate(int argc, char *argv[]) {
 }
 
 TemplateModule::TemplateModule(int example_param, bool example_flag)
-    : ModuleParams(nullptr) {}
+    : CDev("/dev/pwm_output0"),
+      OutputModuleInterface(MODULE_NAME, px4::wq_configurations::hp_default)
+{
+    CDev::init();
+}
 
 void TemplateModule::run() {
   // Example: run the loop synchronized to the sensor_combined topic publication
@@ -155,10 +161,10 @@ void TemplateModule::run() {
       orb_copy(ORB_ID(actuator_outputs), actuator_outputs_sub,
                &actuator_outputs);
       // TODO: do something with the data...
-      PX4_INFO("actuators: %d", actuator_outputs.noutputs);
-      for (uint32_t i = 0; i < actuator_outputs.noutputs; i++) {
-        PX4_INFO("actuator(%d): %f", i, double(actuator_outputs.output[i]));
-      }
+//      PX4_INFO("actuators: %d", actuator_outputs.noutputs);
+//      for (uint32_t i = 0; i < actuator_outputs.noutputs; i++) {
+//        PX4_INFO("actuator(%d): %f", i, double(actuator_outputs.output[i]));
+//      }
     }
 
     parameters_update();
@@ -177,6 +183,24 @@ void TemplateModule::parameters_update(bool force) {
     // update parameters from storage
     updateParams();
   }
+}
+
+bool TemplateModule::updateOutputs(bool stop_motors, uint16_t outputs[MAX_ACTUATORS],
+                   unsigned num_outputs, unsigned num_control_groups_updated)
+{
+    PX4_WARN("TemplateModule::updateOutputs");
+    return true;
+}
+
+void TemplateModule::Run()
+{
+    PX4_WARN("Run");
+}
+
+int TemplateModule::ioctl(device::file_t *filp, int cmd, unsigned long arg)
+{
+    PX4_WARN("TemplateModule::ioctl");
+    return 0;
 }
 
 int TemplateModule::print_usage(const char *reason) {

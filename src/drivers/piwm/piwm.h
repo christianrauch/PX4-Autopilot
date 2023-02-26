@@ -38,12 +38,15 @@
 #include <uORB/SubscriptionInterval.hpp>
 #include <uORB/topics/parameter_update.h>
 
+#include <drivers/device/device.h>
+#include <lib/mixer_module/mixer_module.hpp>
+
 using namespace time_literals;
 
 extern "C" __EXPORT int piwm_main(int argc, char *argv[]);
 
 
-class TemplateModule : public ModuleBase<TemplateModule>, public ModuleParams
+class TemplateModule : public cdev::CDev, public ModuleBase<TemplateModule>, public OutputModuleInterface
 {
 public:
 	TemplateModule(int example_param, bool example_flag);
@@ -67,6 +70,13 @@ public:
 
 	/** @see ModuleBase::print_status() */
 	int print_status() override;
+
+    bool updateOutputs(bool stop_motors, uint16_t outputs[MAX_ACTUATORS],
+                       unsigned num_outputs, unsigned num_control_groups_updated) override;
+
+    void Run() override;
+
+    int ioctl(device::file_t *filp, int cmd, unsigned long arg);
 
 private:
 
