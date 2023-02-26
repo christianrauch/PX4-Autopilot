@@ -37,6 +37,7 @@
 #include <px4_platform_common/log.h>
 #include <px4_platform_common/posix.h>
 
+#include <drivers/drv_mixer.h>
 #include <drivers/drv_pwm_output.h>
 
 #include <uORB/topics/actuator_outputs.h>
@@ -67,19 +68,19 @@ int TemplateModule::custom_command(int argc, char *argv[]) {
 }
 
 int TemplateModule::task_spawn(int argc, char *argv[]) {
-  _task_id =
-      px4_task_spawn_cmd("module", SCHED_DEFAULT, SCHED_PRIORITY_DEFAULT, 1024,
-                         (px4_main_t)&run_trampoline, (char *const *)argv);
+//  _task_id =
+//      px4_task_spawn_cmd("module", SCHED_DEFAULT, SCHED_PRIORITY_DEFAULT, 1024,
+//                         (px4_main_t)&run_trampoline, (char *const *)argv);
 
-  if (_task_id < 0) {
-    _task_id = -1;
-    return -errno;
-  }
+//  if (_task_id < 0) {
+//    _task_id = -1;
+//    return -errno;
+//  }
 
-  return 0;
-}
+//  return 0;
+//}
 
-TemplateModule *TemplateModule::instantiate(int argc, char *argv[]) {
+//TemplateModule *TemplateModule::instantiate(int argc, char *argv[]) {
   int example_param = 0;
   bool example_flag = false;
   bool error_flag = false;
@@ -111,7 +112,7 @@ TemplateModule *TemplateModule::instantiate(int argc, char *argv[]) {
   }
 
   if (error_flag) {
-    return nullptr;
+    return -1;
   }
 
   TemplateModule *instance = new TemplateModule(example_param, example_flag);
@@ -120,7 +121,11 @@ TemplateModule *TemplateModule::instantiate(int argc, char *argv[]) {
     PX4_ERR("alloc failed");
   }
 
-  return instance;
+  _object.store(instance);
+  _task_id = task_id_is_work_queue;
+  instance->ScheduleNow();
+
+  return 0;
 }
 
 TemplateModule::TemplateModule(int example_param, bool example_flag)
@@ -130,77 +135,209 @@ TemplateModule::TemplateModule(int example_param, bool example_flag)
     CDev::init();
 }
 
-void TemplateModule::run() {
-  // Example: run the loop synchronized to the sensor_combined topic publication
-  int actuator_outputs_sub = orb_subscribe(ORB_ID(actuator_outputs));
+//void TemplateModule::run() {
+//  // Example: run the loop synchronized to the sensor_combined topic publication
+//  int actuator_outputs_sub = orb_subscribe(ORB_ID(actuator_outputs));
 
-  px4_pollfd_struct_t fds[1];
-  fds[0].fd = actuator_outputs_sub;
-  fds[0].events = POLLIN;
+//  px4_pollfd_struct_t fds[1];
+//  fds[0].fd = actuator_outputs_sub;
+//  fds[0].events = POLLIN;
 
-  // initialize parameters
-  parameters_update(true);
+//  // initialize parameters
+//  parameters_update(true);
 
-  while (!should_exit()) {
+//  while (!should_exit()) {
 
-    // wait for up to 1000ms for data
-    int pret = px4_poll(fds, (sizeof(fds) / sizeof(fds[0])), 1000);
+//    // wait for up to 1000ms for data
+//    int pret = px4_poll(fds, (sizeof(fds) / sizeof(fds[0])), 1000);
 
-    if (pret == 0) {
-      // Timeout: let the loop run anyway, don't do `continue` here
+//    if (pret == 0) {
+//      // Timeout: let the loop run anyway, don't do `continue` here
 
-    } else if (pret < 0) {
-      // this is undesirable but not much we can do
-      PX4_ERR("poll error %d, %d", pret, errno);
-      px4_usleep(50000);
-      continue;
+//    } else if (pret < 0) {
+//      // this is undesirable but not much we can do
+//      PX4_ERR("poll error %d, %d", pret, errno);
+//      px4_usleep(50000);
+//      continue;
 
-    } else if (fds[0].revents & POLLIN) {
+//    } else if (fds[0].revents & POLLIN) {
 
-      struct actuator_outputs_s actuator_outputs;
-      orb_copy(ORB_ID(actuator_outputs), actuator_outputs_sub,
-               &actuator_outputs);
-      // TODO: do something with the data...
-//      PX4_INFO("actuators: %d", actuator_outputs.noutputs);
-//      for (uint32_t i = 0; i < actuator_outputs.noutputs; i++) {
-//        PX4_INFO("actuator(%d): %f", i, double(actuator_outputs.output[i]));
-//      }
-    }
+//      struct actuator_outputs_s actuator_outputs;
+//      orb_copy(ORB_ID(actuator_outputs), actuator_outputs_sub,
+//               &actuator_outputs);
+//      // TODO: do something with the data...
+////      PX4_INFO("actuators: %d", actuator_outputs.noutputs);
+////      for (uint32_t i = 0; i < actuator_outputs.noutputs; i++) {
+////        PX4_INFO("actuator(%d): %f", i, double(actuator_outputs.output[i]));
+////      }
+//    }
 
-    parameters_update();
-  }
+//    parameters_update();
+//  }
 
-  orb_unsubscribe(actuator_outputs_sub);
-}
+//  orb_unsubscribe(actuator_outputs_sub);
+//}
 
-void TemplateModule::parameters_update(bool force) {
-  // check for parameter updates
-  if (_parameter_update_sub.updated() || force) {
-    // clear update
-    parameter_update_s update;
-    _parameter_update_sub.copy(&update);
+//void TemplateModule::parameters_update(bool force) {
+//  // check for parameter updates
+//  if (_parameter_update_sub.updated() || force) {
+//    // clear update
+//    parameter_update_s update;
+//    _parameter_update_sub.copy(&update);
 
-    // update parameters from storage
-    updateParams();
-  }
-}
+//    // update parameters from storage
+//    updateParams();
+//  }
+//}
 
 bool TemplateModule::updateOutputs(bool stop_motors, uint16_t outputs[MAX_ACTUATORS],
                    unsigned num_outputs, unsigned num_control_groups_updated)
 {
     PX4_WARN("TemplateModule::updateOutputs");
+    PX4_INFO("actuators: %d", MAX_ACTUATORS);
+    for (uint32_t i = 0; i < MAX_ACTUATORS; i++) {
+        PX4_INFO("actuator(%d): %f", i, double(outputs[i]));
+    }
     return true;
 }
 
 void TemplateModule::Run()
 {
     PX4_WARN("Run");
+    _mixing_output.update();
+    _mixing_output.updateSubscriptions(true);
 }
 
 int TemplateModule::ioctl(device::file_t *filp, int cmd, unsigned long arg)
 {
-    PX4_WARN("TemplateModule::ioctl");
-    return 0;
+    PX4_WARN("TemplateModule::ioctl, cmd %d", cmd);
+
+    int ret = OK;
+
+    switch (cmd) {
+    case PWM_SERVO_ARM:
+        break;
+
+    case PWM_SERVO_DISARM:
+        break;
+
+    case PWM_SERVO_SET_MIN_PWM: {
+            struct pwm_output_values *pwm = (struct pwm_output_values *)arg;
+
+            for (unsigned i = 0; i < pwm->channel_count; i++) {
+                if (i < OutputModuleInterface::MAX_ACTUATORS && !_mixing_output.useDynamicMixing()) {
+                    _mixing_output.minValue(i) = pwm->values[i];
+                }
+            }
+
+            break;
+        }
+
+    case PWM_SERVO_SET_MAX_PWM: {
+            struct pwm_output_values *pwm = (struct pwm_output_values *)arg;
+
+            for (unsigned i = 0; i < pwm->channel_count; i++) {
+                if (i < OutputModuleInterface::MAX_ACTUATORS && !_mixing_output.useDynamicMixing()) {
+                    _mixing_output.maxValue(i) = pwm->values[i];
+                }
+            }
+
+            break;
+        }
+
+    case PWM_SERVO_SET_UPDATE_RATE:
+        // PWMSim does not limit the update rate
+        break;
+
+    case PWM_SERVO_SET_SELECT_UPDATE_RATE:
+        break;
+
+    case PWM_SERVO_GET_DEFAULT_UPDATE_RATE:
+        *(uint32_t *)arg = 9999;
+        break;
+
+    case PWM_SERVO_GET_UPDATE_RATE:
+        *(uint32_t *)arg = 9999;
+        break;
+
+    case PWM_SERVO_GET_SELECT_UPDATE_RATE:
+        *(uint32_t *)arg = 0;
+        break;
+
+    case PWM_SERVO_GET_FAILSAFE_PWM: {
+            struct pwm_output_values *pwm = (struct pwm_output_values *)arg;
+
+            for (unsigned i = 0; i < OutputModuleInterface::MAX_ACTUATORS; i++) {
+                pwm->values[i] = _mixing_output.failsafeValue(i);
+            }
+
+            pwm->channel_count = OutputModuleInterface::MAX_ACTUATORS;
+            break;
+        }
+
+    case PWM_SERVO_GET_DISARMED_PWM: {
+            struct pwm_output_values *pwm = (struct pwm_output_values *)arg;
+
+            for (unsigned i = 0; i < OutputModuleInterface::MAX_ACTUATORS; i++) {
+                pwm->values[i] = _mixing_output.disarmedValue(i);
+            }
+
+            pwm->channel_count = OutputModuleInterface::MAX_ACTUATORS;
+            break;
+        }
+
+    case PWM_SERVO_GET_MIN_PWM: {
+            struct pwm_output_values *pwm = (struct pwm_output_values *)arg;
+
+            for (unsigned i = 0; i < OutputModuleInterface::MAX_ACTUATORS; i++) {
+                pwm->values[i] = _mixing_output.minValue(i);
+            }
+
+            pwm->channel_count = OutputModuleInterface::MAX_ACTUATORS;
+            break;
+        }
+
+    case PWM_SERVO_GET_MAX_PWM: {
+            struct pwm_output_values *pwm = (struct pwm_output_values *)arg;
+
+            for (unsigned i = 0; i < OutputModuleInterface::MAX_ACTUATORS; i++) {
+                pwm->values[i] = _mixing_output.maxValue(i);
+            }
+
+            pwm->channel_count = OutputModuleInterface::MAX_ACTUATORS;
+            break;
+        }
+
+    case PWM_SERVO_GET_RATEGROUP(0) ... PWM_SERVO_GET_RATEGROUP(PWM_OUTPUT_MAX_CHANNELS - 1): {
+            // no restrictions on output grouping
+            unsigned channel = cmd - PWM_SERVO_GET_RATEGROUP(0);
+
+            *(uint32_t *)arg = (1 << channel);
+            break;
+        }
+
+    case PWM_SERVO_GET_COUNT:
+        *(unsigned *)arg = OutputModuleInterface::MAX_ACTUATORS;
+        break;
+
+    case MIXERIOCRESET:
+        _mixing_output.resetMixer();
+        break;
+
+    case MIXERIOCLOADBUF: {
+            const char *buf = (const char *)arg;
+            unsigned buflen = strlen(buf);
+            ret = _mixing_output.loadMixer(buf, buflen);
+            break;
+        }
+
+    default:
+        ret = -ENOTTY;
+        break;
+    }
+
+//    return 0;
+    return ret;
 }
 
 int TemplateModule::print_usage(const char *reason) {

@@ -57,7 +57,7 @@ public:
 	static int task_spawn(int argc, char *argv[]);
 
 	/** @see ModuleBase */
-	static TemplateModule *instantiate(int argc, char *argv[]);
+//	static TemplateModule *instantiate(int argc, char *argv[]);
 
 	/** @see ModuleBase */
 	static int custom_command(int argc, char *argv[]);
@@ -66,15 +66,13 @@ public:
 	static int print_usage(const char *reason = nullptr);
 
 	/** @see ModuleBase::run() */
-	void run() override;
+//	void run() override;
 
 	/** @see ModuleBase::print_status() */
 	int print_status() override;
 
     bool updateOutputs(bool stop_motors, uint16_t outputs[MAX_ACTUATORS],
                        unsigned num_outputs, unsigned num_control_groups_updated) override;
-
-    void Run() override;
 
     int ioctl(device::file_t *filp, int cmd, unsigned long arg);
 
@@ -87,11 +85,15 @@ private:
 	 */
 	void parameters_update(bool force = false);
 
+    void Run() override;
+
 
 	DEFINE_PARAMETERS(
 		(ParamInt<px4::params::SYS_AUTOSTART>) _param_sys_autostart,   /**< example parameter */
 		(ParamInt<px4::params::SYS_AUTOCONFIG>) _param_sys_autoconfig  /**< another parameter */
 	)
+
+    MixingOutput _mixing_output{"lala", MAX_ACTUATORS, *this, MixingOutput::SchedulingPolicy::Auto, false, false};
 
 	// Subscriptions
 	uORB::SubscriptionInterval _parameter_update_sub{ORB_ID(parameter_update), 1_s};
