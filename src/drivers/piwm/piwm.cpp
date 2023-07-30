@@ -193,17 +193,17 @@ TemplateModule::TemplateModule(int example_param, bool example_flag)
 bool TemplateModule::updateOutputs(bool stop_motors, uint16_t outputs[MAX_ACTUATORS],
                    unsigned num_outputs, unsigned num_control_groups_updated)
 {
-    PX4_WARN("TemplateModule::updateOutputs");
-    PX4_INFO("actuators: %d", MAX_ACTUATORS);
-    for (uint32_t i = 0; i < MAX_ACTUATORS; i++) {
-        PX4_INFO("actuator(%d): %f", i, double(outputs[i]));
-    }
+    // PX4_WARN("TemplateModule::updateOutputs");
+    // PX4_INFO("actuators: %d", MAX_ACTUATORS);
+    // for (uint32_t i = 0; i < MAX_ACTUATORS; i++) {
+    //     PX4_INFO("actuator(%d): %f", i, double(outputs[i]));
+    // }
     return true;
 }
 
 void TemplateModule::Run()
 {
-    PX4_WARN("Run");
+    // PX4_WARN("Run");
     _mixing_output.update();
     _mixing_output.updateSubscriptions(true);
 }
