@@ -59,6 +59,12 @@ int PCA9685::updatePWM(const uint16_t *outputs, unsigned num_outputs)
 		PX4_DEBUG("PCA9685 can only drive up to 16 channels");
 	}
 
+	// DBG
+	PX4_WARN("#### actuators: %d", num_outputs);
+	for (unsigned i = 0; i < num_outputs; ++i) {
+		PX4_INFO("PWM(%d): %hu", i, outputs[i]);
+	}
+
 	uint16_t out[PCA9685_PWM_CHANNEL_COUNT];
 	memcpy(out, outputs, sizeof(uint16_t) * num_outputs);
 
